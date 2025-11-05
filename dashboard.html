@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - W_PanelCDM</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <h1>🚀 W_PanelCDM</h1>
+                <span class="user-info">Bienvenido, <span id="userDisplay">Administrador</span></span>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="refreshData()">
+                    🔄 Actualizar
+                </button>
+                <button class="header-btn" onclick="exportData()">
+                    📥 Exportar
+                </button>
+                <button class="logout-btn" onclick="logout()">
+                    👋 Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Stats Grid -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <div class="number" id="totalUsers">1,247</div>
+                    <div class="label">Usuarios Totales</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-content">
+                    <div class="number" id="activeSessions">89</div>
+                    <div class="label">Sesiones Activas</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="number" id="conversionRate">68%</div>
+                    <div class="label">Tasa de Conversión</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-content">
+                    <div class="number" id="avgTime">4.2m</div>
+                    <div class="label">Tiempo Promedio</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Grid -->
+        <section class="charts-grid">
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3>📊 Rendimiento Mensual</h3>
+                    <button class="card-btn" onclick="toggleChart('performanceChart')">⚙️</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3>🎯 Distribución por Categorías</h3>
+                    <button class="card-btn" onclick="toggleChart('distributionChart')">⚙️</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3>📈 Tendencias de Uso</h3>
+                    <button class="card-btn" onclick="toggleChart('trendsChart')">⚙️</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="card-header">
+                    <h3>🔔 Actividad Reciente</h3>
+                    <button class="card-btn" onclick="clearActivityLog()">🗑️</button>
+                </div>
+                <div class="activity-log" id="activityLog">
+                    <div class="activity-item">
+                        <div class="activity-content">
+                            <strong>Sesión iniciada correctamente</strong>
+                            <span class="activity-time" id="loginTime"></span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-content">
+                            <strong>Dashboard cargado exitosamente</strong>
+                            <span class="activity-time">Hace unos segundos</span>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-content">
+                            <strong>Sistema inicializado</strong>
+                            <span class="activity-time">Justo ahora</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controls Section -->
+        <section class="controls-section">
+            <div class="controls-grid">
+                <button class="control-btn" onclick="refreshData()">
+                    <span class="btn-icon">🔄</span>
+                    <span class="btn-text">Actualizar Datos</span>
+                </button>
+                <button class="control-btn" onclick="exportData()">
+                    <span class="btn-icon">📥</span>
+                    <span class="btn-text">Exportar Reporte</span>
+                </button>
+                <button class="control-btn" onclick="toggleTheme()">
+                    <span class="btn-icon">🌙</span>
+                    <span class="btn-text">Alternar Tema</span>
+                </button>
+                <button class="control-btn" onclick="showSettings()">
+                    <span class="btn-icon">⚙️</span>
+                    <span class="btn-text">Configuración</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
