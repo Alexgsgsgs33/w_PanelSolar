@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - W_PanelCDM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 8px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Panel de Control W_PanelCDM</h1>
+            <p>Dashboard interactivo con gráficos y métricas en tiempo real</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="number" id="totalUsers">1,247</div>
+                <div class="label">Usuarios Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="activeSessions">89</div>
+                <div class="label">Sesiones Activas</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="conversionRate">68%</div>
+                <div class="label">Tasa de Conversión</div>
+            </div>
+            <div class="stat-card">
+                <div class="number" id="avgTime">4.2m</div>
+                <div class="label">Tiempo Promedio</div>
+            </div>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h3>📊 Rendimiento Mensual</h3>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🎯 Distribución por Categorías</h3>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📈 Tendencias de Uso</h3>
+                <div class="chart-container">
+                    <canvas id="trendsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>🔔 Actividad Reciente</h3>
+                <div id="activityLog" style="max-height: 200px; overflow-y: auto;">
+                    <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                        <strong>Nuevo usuario registrado</strong>
+                        <div style="font-size: 0.8rem; color: #666;">Hace 2 minutos</div>
+                    </div>
+                    <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                        <strong>Actualización completada</strong>
+                        <div style="font-size: 0.8rem; color: #666;">Hace 15 minutos</div>
+                    </div>
+                    <div style="padding: 8px 0; border-bottom: 1px solid #eee;">
+                        <strong>Backup del sistema</strong>
+                        <div style="font-size: 0.8rem; color: #666;">Hace 1 hora</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="refreshData()">🔄 Actualizar Datos</button>
+            <button onclick="exportData()">📥 Exportar Reporte</button>
+            <button onclick="toggleTheme()">🌙 Alternar Tema</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getFirestore, collection, getDocs } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+        // Firebase configuration (debes reemplazar con tu configuración)
+        const firebaseConfig = {
+            apiKey: "tu-api-key",
+            authDomain: "tu-proyecto.firebaseapp.com",
+            projectId: "tu-proyecto-id",
+            storageBucket: "tu-proyecto.appspot.com",
+            messagingSenderId: "tu-sender-id",
+            appId: "tu-app-id"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Initialize charts
+        let performanceChart, distributionChart, trendsChart;
+
+        function initializeCharts() {
+            // Performance Chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            performanceChart = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Rendimiento',
+                        data: [65, 59, 80, 81, 56, 75],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+
+            // Distribution Chart
+            const distributionCtx = document.getElementById('distributionChart').getContext('2d');
+            distributionChart = new Chart(distributionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Categoría A', 'Categoría B', 'Categoría C', 'Categoría D'],
+                    datasets: [{
+                        data: [30, 25, 20, 25],
+                        backgroundColor: [
+                            '#667eea',
+                            '#764ba2',
+                            '#f093fb',
+                            '#4facfe'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Trends Chart
+            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
+            trendsChart = new Chart(trendsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Actividad',
+                        data: [12, 19, 15, 17, 14, 22, 8],
+                        backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                        borderColor: '#667eea',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para cargar datos desde Firebase
+        async function loadFirebaseData() {
+            try {
+                // Ejemplo: cargar datos de una colección
+                const querySnapshot = await getDocs(collection(db, "metrics"));
+                querySnapshot.forEach((doc) => {
+                    console.log("Datos de Firebase:", doc.id, " => ", doc.data());
+                    // Aquí puedes actualizar tus gráficos con datos reales
+                });
+            } catch (error) {
+                console.error("Error cargando datos de Firebase:", error);
+            }
+        }
+
+        // Funciones de control
+        function refreshData() {
+            // Simular actualización de datos
+            performanceChart.data.datasets[0].data = performanceChart.data.datasets[0].data.map(
+                () => Math.floor(Math.random() * 100)
+            );
+            performanceChart.update();
+
+            // Actualizar estadísticas
+            document.getElementById('totalUsers').textContent = 
+                Math.floor(1000 + Math.random() * 500).toLocaleString();
+            document.getElementById('activeSessions').textContent = 
+                Math.floor(50 + Math.random() * 50);
+
+            // Cargar datos reales de Firebase
+            loadFirebaseData();
+
+            // Mostrar notificación
+            alert('✅ Datos actualizados correctamente');
+        }
+
+        function exportData() {
+            // Simular exportación de datos
+            const dataStr = "data:text/json;charset=utf-8," + 
+                encodeURIComponent(JSON.stringify({
+                    timestamp: new Date().toISOString(),
+                    metrics: {
+                        totalUsers: document.getElementById('totalUsers').textContent,
+                        activeSessions: document.getElementById('activeSessions').textContent
+                    }
+                }));
+            
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            downloadAnchorNode.setAttribute("download", "reporte_dashboard.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        function toggleTheme() {
+            document.body.style.filter = document.body.style.filter === 'invert(1)' ? 'none' : 'invert(1)';
+        }
+
+        // Inicializar la aplicación cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            loadFirebaseData();
+        });
+
+        // Manejar errores globales
+        window.addEventListener('error', function(e) {
+            console.error('Error en la aplicación:', e.error);
+        });
+    </script>
+</body>
+</html>
